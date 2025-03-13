@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { coffeeOptions } from "../utils";
+import Modal from "./Modal";
+import Authentication from "./Authentication";
 
-export default function CoffeeForm() {
+export default function CoffeeForm(props) {
+  const { isAuthenticated } = props;
   const hours = Array.from({ length: 24 }, (_, i) => i);
   const minutes = [0, 5, 10, 15, 30, 45];
+
+  const [showModal, setShowModal] = useState(false);
   const [selectedCoffee, setSelectedCoffee] = useState(null);
   const [showCoffeeTypes, setShowCoffeeTypes] = useState(false);
   const [coffeeCost, setCoffeeCost] = useState(0);
@@ -11,11 +16,20 @@ export default function CoffeeForm() {
   const [minute, setMinute] = useState(0);
 
   function handleSubmitForm() {
+    if (!isAuthenticated) {
+      setShowModal(true);
+      return;
+    }
     console.log(selectedCoffee, coffeeCost, hour, minute);
   }
 
   return (
     <>
+      {showModal && (
+        <Modal handleClosemodal={() => setShowModal(false)}>
+          <Authentication />
+        </Modal>
+      )}
       <div className="section-header">
         <i class="fa-solid fa-pencil"></i>
         <h2>Start Tracking Today</h2>
