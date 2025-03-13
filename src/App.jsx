@@ -6,8 +6,10 @@ import Stats from "./components/Stats";
 import { useAuth } from "./context/AuthContext";
 
 function App() {
-  const { globalUser } = useAuth();
+  const { globalUser, globalData, isLoading } = useAuth();
   const isAuthenticated = globalUser;
+  const isData = globalData && !!Object.keys(globalData || {}).length;
+
   const authenticatedContent = (
     <>
       <Stats />
@@ -19,7 +21,8 @@ function App() {
     <Layout>
       <Hero />
       <CoffeeForm isAuthenticated={isAuthenticated} />
-      {isAuthenticated && authenticatedContent}
+      {(isAuthenticated && isLoading) && <p>Loading data...</p>}
+      {(isAuthenticated && isData) && authenticatedContent}
     </Layout>
   );
 }

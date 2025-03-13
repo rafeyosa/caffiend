@@ -2,6 +2,9 @@ import { useState } from "react";
 import { coffeeOptions } from "../utils";
 import Modal from "./Modal";
 import Authentication from "./Authentication";
+import { useAuth } from "../context/AuthContext";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../../firebase";
 
 export default function CoffeeForm(props) {
   const { isAuthenticated } = props;
@@ -15,12 +18,53 @@ export default function CoffeeForm(props) {
   const [hour, setHour] = useState(0);
   const [minute, setMinute] = useState(0);
 
-  function handleSubmitForm() {
+  const { globalUser, globalData, setGlobalData } = useAuth();
+
+  async function handleSubmitForm() {
     if (!isAuthenticated) {
       setShowModal(true);
       return;
     }
-    console.log(selectedCoffee, coffeeCost, hour, minute);
+    if (!selectedCoffee) {
+      return;
+    }
+
+    try {
+      const newGlobalData = {
+        ...(globalData || {}),
+      };
+
+      const nowTime = Date.now();
+      const timeToSubtract = hour * 60 * 60 * 1000 + minute * 60 * 100;
+      const timestamp = nowTime - timeToSubtract;
+      const newData = {
+        name: selectedCoffee,
+        cost: coffeeCost,
+      };
+      newGlobalData[timestamp] = newData;
+
+      setGlobalData(newGlobalData);
+      console.log(timestamp, selectedCoffee, coffeeCost);
+
+      const userRef = doc(db, "users", globalUser.uid);
+      const res = await setDoc(
+        userRef,
+        { [timestamp]: newData },
+        { merge: true }
+      );
+
+      clearForm();
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  function clearForm() {
+    setSelectedCoffee(null);
+    setShowCoffeeTypes(false)
+    setCoffeeCost(0);
+    setHour(0);
+    setMinute(0);
   }
 
   function handleClosemodal() {
@@ -105,6 +149,7 @@ export default function CoffeeForm(props) {
           <h6>Hours</h6>
           <select
             id="hours-select"
+            value={hour}
             onChange={(e) => {
               setHour(e.target.value);
             }}
@@ -122,6 +167,7 @@ export default function CoffeeForm(props) {
           <h6>Mins</h6>
           <select
             id="mins-select"
+            value={minute}
             onChange={(e) => {
               setMinute(e.target.value);
             }}

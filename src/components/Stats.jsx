@@ -1,14 +1,15 @@
+import { useAuth } from "../context/AuthContext";
 import {
   calculateCoffeeStats,
   calculateCurrentCaffeineLevel,
-  coffeeConsumptionHistory,
   getTopThreeCoffees,
   statusLevels,
 } from "../utils";
 
 export default function Stats() {
-  const stats = calculateCoffeeStats(coffeeConsumptionHistory);
-  const caffeineLevel = calculateCurrentCaffeineLevel(coffeeConsumptionHistory);
+  const { globalData } = useAuth();
+  const stats = calculateCoffeeStats(globalData);
+  const caffeineLevel = calculateCurrentCaffeineLevel(globalData);
   let warningLevel = "";
   if (caffeineLevel < statusLevels["low"].maxLevel) {
     warningLevel = "low";
@@ -31,12 +32,13 @@ export default function Stats() {
               <span className="stat-text">{caffeineLevel}</span>mg
             </p>
             <h5
+              className="capitalize-text"
               style={{
                 color: statusLevels[warningLevel].color,
                 background: statusLevels[warningLevel].background,
               }}
             >
-              Low
+              {warningLevel}
             </h5>
           </div>
           <p>{statusLevels[warningLevel].description}</p>
@@ -70,17 +72,15 @@ export default function Stats() {
             </tr>
           </thead>
           <tbody>
-            {getTopThreeCoffees(coffeeConsumptionHistory).map(
-              (coffee, coffeeIndex) => {
-                return (
-                  <tr key={coffeeIndex}>
-                    <td>{coffee.coffeeName}</td>
-                    <td>{coffee.count}</td>
-                    <td>{coffee.percentage}</td>
-                  </tr>
-                );
-              }
-            )}
+            {getTopThreeCoffees(globalData).map((coffee, coffeeIndex) => {
+              return (
+                <tr key={coffeeIndex}>
+                  <td>{coffee.coffeeName}</td>
+                  <td>{coffee.count}</td>
+                  <td>{coffee.percentage}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

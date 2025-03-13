@@ -258,6 +258,10 @@ footer {
   color: red;
 }
 
+.capitalize-text {
+  text-transform: capitalize;
+}
+
 @media (min-width: 640px) {
   main h1 {
     padding-top: 2.5rem;
