@@ -254,6 +254,10 @@ footer {
   gap: 1rem;
 }
 
+.error-message {
+  color: red;
+}
+
 @media (min-width: 640px) {
   main h1 {
     padding-top: 2.5rem;

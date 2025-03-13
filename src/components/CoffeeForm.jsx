@@ -23,11 +23,15 @@ export default function CoffeeForm(props) {
     console.log(selectedCoffee, coffeeCost, hour, minute);
   }
 
+  function handleClosemodal() {
+    setShowModal(false);
+  }
+
   return (
     <>
       {showModal && (
-        <Modal handleClosemodal={() => setShowModal(false)}>
-          <Authentication />
+        <Modal handleClosemodal={handleClosemodal}>
+          <Authentication handleClosemodal={handleClosemodal} />
         </Modal>
       )}
       <div className="section-header">
