@@ -14,7 +14,7 @@ export default function Layout(props) {
       </div>
       <button onClick={() => setShowModal(true)}>
         <p>Sign up free</p>
-        <i class="fa-solid fa-mug-hot"></i>
+        <i className="fa-solid fa-mug-hot" />
       </button>
     </header>
   );

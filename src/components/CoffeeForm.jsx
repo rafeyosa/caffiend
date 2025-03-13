@@ -31,7 +31,7 @@ export default function CoffeeForm(props) {
         </Modal>
       )}
       <div className="section-header">
-        <i class="fa-solid fa-pencil"></i>
+        <i className="fa-solid fa-pencil" />
         <h2>Start Tracking Today</h2>
       </div>
       <h4>Select coffee type</h4>
