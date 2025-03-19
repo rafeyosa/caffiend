@@ -1,6 +1,6 @@
 # Caffiend
 
-Caffiend is a coffee tracking web application built using React.js, FantaCSS, and Firebase. This app allows users to log their coffee consumption, track caffeine intake, and manage their favorite coffee types. The project demonstrates frontend development with React, styling with FantaCSS, and backend integration using Firebase for authentication and data storage.
+Caffiend is a coffee tracking web application built using React.js, FantaCSS, and Firebase. This app allows users to log their coffee consumption and track caffeine intake. The project demonstrates frontend development with React, styling with FantaCSS, and backend integration using Firebase for authentication and data storage.
 
 ## Learning objectives
 - React.js Basics (Components, Hooks, Props)
