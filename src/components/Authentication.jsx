@@ -12,13 +12,19 @@ export default function Authentication(props) {
   const { signUp, login } = useAuth();
 
   async function handleAuthenticate() {
-    if (
-      !email ||
-      !email.includes("@") ||
-      !password ||
-      password.length < 6 ||
-      isAuthenticating
-    ) {
+    if (!email || !password) {
+      setErrorMessage("Email and password cannot be empty");
+      return;
+    }
+    if (!email.includes("@")) {
+      setErrorMessage("Email is not valid");
+      return;
+    }
+    if (password.length < 6) {
+      setErrorMessage("Password must be at least 6 characters long");
+      return;
+    }
+    if (isAuthenticating) {
       return;
     }
 
